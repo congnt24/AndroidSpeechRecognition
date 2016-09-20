@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidSpeechRecognitionService.iml" filepath="$PROJECT_DIR$/AndroidSpeechRecognitionService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidSpeechRecognition.iml" filepath="$PROJECT_DIR$/AndroidSpeechRecognition.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

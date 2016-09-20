@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvResult;
     private int mBindFlag;
     private Messenger mServiceMessenger;
-    private VisualizerView visualizerView;
+    private VisualizerView2 visualizerView;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         public static final boolean DEBUG = true;
         public static final String TAG = "ZXXX";
@@ -61,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(byte[] bytes){
-        Toast.makeText(MainActivity.this, "AAAAAAAAAAAAAA", Toast.LENGTH_SHORT).show();
-        visualizerView.updateVisualizer(bytes);
+    public void onEvent3(float rmsdB){
+        visualizerView.updateVisualizer(rmsdB);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_main);
-        visualizerView = (VisualizerView) findViewById(R.id.visualizerview);
+        visualizerView = (VisualizerView2) findViewById(R.id.visualizerview);
         tvResult = (TextView) findViewById(R.id.tv_result);
         Intent service = new Intent(this, VoiceCommandService.class);
         startService(service);

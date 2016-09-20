@@ -17,7 +17,6 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +31,7 @@ public class VoiceCommandService extends Service {
     static final int MSG_RECOGNIZER_CANCEL = 2;
     private static final String TAG = "SpeechRecognitionListener";
     private static final String LOG_TAG = "LOGTAG";
+    private static final int FOREGROUND_FLAGS = 101;
     protected final Messenger mServerMessenger = new Messenger(new IncomingHandler(this));
     protected AudioManager mAudioManager;
     protected SpeechRecognizer mSpeechRecognizer;
@@ -82,7 +82,7 @@ public class VoiceCommandService extends Service {
         super.onCreate();
         EventBus.getDefault().register(this);
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        setStreamMute(true);
+//        setStreamMute(true);
 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         mSpeechRecognizer.setRecognitionListener(new SpeechRecognitionListener());
@@ -120,19 +120,19 @@ public class VoiceCommandService extends Service {
                     notification);
             mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
             mIsListening = true;
-            Log.d(TAG, "message start listening"); //$NON-NLS-1$
+            Log.d(TAG, "message start listening aa"); //$NON-NLS-1$
         }
     }
 
     public void stopListening() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(101);
+            stopForeground(STOP_FOREGROUND_DETACH);
         } else {
             stopForeground(true);
         }
         mSpeechRecognizer.cancel();
         mIsListening = false;
-        Log.d(TAG, "message canceled recognizer"); //$NON-NLS-1$
+        Log.d(TAG, "message canceled recognizer aaaaaaaaaaaaaa"); //$NON-NLS-1$
     }
 
     @Subscribe
@@ -308,7 +308,10 @@ public class VoiceCommandService extends Service {
 
         @Override
         public void onRmsChanged(float rmsdB) {
-            Log.i(LOG_TAG, "onRmsChanged: " + rmsdB);
+            if (mIsListening) {
+                Log.i(LOG_TAG, "onRmsChanged: " + rmsdB);
+                EventBus.getDefault().post(rmsdB+3);
+            }
         }
 
     }
